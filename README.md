@@ -3,8 +3,8 @@
 # Required input 
       - list file of youtube video links
 # Output 
-      - this script will give out a spreadsheet will three column 
+      - this script will give out a spreadsheet with three column 
          1. Links
          2. Durations
          3. Title
-# I used YotubeApi to get all the required informations 
+ I used YotubeApi to get all the required informations 
