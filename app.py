@@ -4,7 +4,7 @@ from pathlib import Path
 from pytube import extract
 from googleapiclient.discovery import build
 
-api_key = 'AIzaSyDXNgeVWIp0iCUa7MV-Lrjxu_KPMo0bGzI'
+api_key = 'Your Api key'
 
 youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -21,7 +21,6 @@ def get_durations(vid_id):
         part="contentDetails",
         id= vid_id
     )
-
     vid_response = vid_request.execute()
 
     time = []
