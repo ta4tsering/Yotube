@@ -4,7 +4,7 @@ from pathlib import Path
 from pytube import extract
 from googleapiclient.discovery import build
 
-api_key = 'Your Api key'
+api_key = 'AIzaSyCikpGp1r79zqmMBLUary3gxbI4PjcbzFA'
 
 youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -15,6 +15,7 @@ seconds_pattern = re.compile(r'(\d+)S')
 durations = []
 url_list = []
 titles = []
+privacyStatus = []
 
 def get_durations(vid_id):
     vid_request = youtube.videos().list(
@@ -54,15 +55,27 @@ def get_titles(vid_id):
             return title
         else:
             return "No Title"
+        
+def get_video_status(vid_id):
+    status_request = youtube.videos().list(
+        part="status",
+        id= vid_id
+    )
+    status_response = status_request.execute()
+    
+    privacy_status = status_response['items'][0]['status']['privacyStatus']
+    return privacy_status
 
 if __name__=="__main__":
     urls = Path(f'./links.txt').read_text(encoding='utf-8')
     url_list += urls.split("\n")
     for url in url_list:
         id = extract.video_id(url)
+        privacy_status = get_video_status(id)
+        privacyStatus.append(privacy_status)
         duration = get_durations(id)
         durations.append(duration)
         title = get_titles(id)
         titles.append(title)
-    df = DataFrame({'Links':url_list,'Durations':durations, 'Titles':titles})
+    df = DataFrame({'Links':url_list,'Durations':durations, 'Titles':titles, 'privacyStatus':privacyStatus})
     df.to_excel('demo.xlsx',sheet_name='Esukhia Work', index=True)
